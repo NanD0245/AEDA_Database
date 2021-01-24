@@ -1,0 +1,92 @@
+HIGHWAYS
+Highway nr1: A1
+  Toll nr1:
+  P1 - Porto - 0.500000 - 0
+    Technician nr1: Tomas - review - 0.000000 - 1
+    Technician nr2: Fernando - informatic - 2.000000 - 0
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr2:
+  P2 - Porto - 0.500000 - 1
+    Lane nr1:
+    0 - 0 - Fernando - 0
+    Lane nr2:
+    1 - 1
+  Toll nr3:
+  P4 - Aveiro - 55.299999 - 0
+    Technician nr1: Luis Rego - review - 0.000000 - 2
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr4:
+  P3 - Aveiro - 55.599998 - 1
+    Lane nr1:
+    0 - 0 - Luis - 1
+    Lane nr2:
+    1 - 1
+Highway nr2: A2
+  Toll nr1:
+  P1 - Lisboa - 0.300000 - 0
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr2:
+  P2 - Lisboa - 0.700000 - 1
+    Technician nr1: Santos - eletronic - 0.000000 - 0
+    Lane nr1:
+    0 - 1
+    Lane nr2:
+    1 - 0 - Santos - 2
+  Toll nr3:
+  P4 - Algarve - 159.300003 - 0
+    Technician nr1: Antonio - eletronic - 0.000000 - 0
+    Technician nr2: Rego - informatic - 0.666667 - 3
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr4:
+  P3 - Algarve - 159.199997 - 1
+    Lane nr1:
+    0 - 0 - Rego - 3
+    Lane nr2:
+    1 - 1
+
+VEHICLES
+Taxes: 0.12 0.15 0.2 0.3
+Vehicle nr1: 
+A1 - 1 - 1
+Vehicle nr2: 
+A2 - 2 - 0
+Vehicle nr3: 
+A3 - 2 - 0
+Vehicle nr4: 
+A4 - 3 - 1
+Vehicle nr5: 
+A5 - 4 - 1
+Vehicle nr6: 
+A6 - 3 - 1
+Vehicle nr7: 
+AA - 1 - 1
+Vehicle nr8: 
+AB - 3 - 1
+
+MOVEMENTS
+
+EMPLOYEES
+Employee nr1:
+Fernando - 0
+Employee nr2:
+Luis - 1
+Employee nr3:
+Santos - 2
+Employee nr4:
+Rego - 3
+
+OWNERS
+
+INTERVENTIONS

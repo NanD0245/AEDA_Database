@@ -1,0 +1,86 @@
+HIGHWAYS
+Highway nr1: A1
+  Toll nr1:
+  P1 - Porto - 0.500000 - 0
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr2:
+  P2 - Porto - 0.500000 - 1
+    Lane nr1:
+    0 - 0 - Fernando - 0
+    Lane nr2:
+    1 - 1
+  Toll nr3:
+  P4 - Aveiro - 55.299999 - 0
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr4:
+  P3 - Aveiro - 55.599998 - 1
+    Lane nr1:
+    0 - 0 - Luis - 0
+    Lane nr2:
+    1 - 1
+Highway nr2: A2
+  Toll nr1:
+  P1 - Lisboa - 0.300000 - 0
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr2:
+  P2 - Lisboa - 0.700000 - 1
+    Lane nr1:
+    0 - 1
+    Lane nr2:
+    1 - 0 - Santos - 1
+  Toll nr3:
+  P4 - Algarve - 159.300003 - 0
+    Lane nr1:
+    0 - 0
+    Lane nr2:
+    1 - 0
+  Toll nr4:
+  P3 - Algarve - 159.199997 - 1
+    Lane nr1:
+    0 - 0 - Rego - 0
+    Lane nr2:
+    1 - 1
+
+VEHICLES
+Taxes: 0.12 0.15 0.2 0.3
+Vehicle nr1: 
+A1 - 1 - 1
+Vehicle nr2: 
+A2 - 2 - 0
+Vehicle nr3: 
+A3 - 2 - 0
+Vehicle nr4: 
+A4 - 3 - 1
+Vehicle nr5: 
+A5 - 4 - 1
+
+MOVEMENTS
+Movement nr1: 
+12/5/2020 23:30:00 - A1 - P2 - 0 - A3 - 54.799999 - 8.220000 - 12/5/2020 20:00:05 - A1 - P4 - 0 - A3
+Movement nr2: 
+12/5/2020 11:30:00 - A1 - P3 - 0 - A1 - -55.099998 - -6.612000 - 12/5/2020 8:00:05 - A1 - P1 - 0 - A1
+Movement nr3: 
+12/5/2020 20:00:05 - A1 - P3 - 1 - A3 - -55.099998 - -8.265000 - 12/5/2020 20:00:05 - A1 - P1 - 0 - A3
+Movement nr4: 
+12/5/2020 20:00:05 - A2 - P3 - 0 - A4 - -158.899994 - -31.779999 - 12/5/2020 20:00:05 - A2 - P1 - 0 - A4
+Movement nr5: 
+12/5/2020 20:00:05 - A2 - P2 - 0 - A5 - 158.600006 - 47.580002 - 12/5/2020 20:00:05 - A2 - P4 - 1 - A5
+
+EMPLOYEES
+Employee nr1:
+Fernando - 0
+Employee nr2:
+Luis - 0
+Employee nr3:
+Santos - 1
+Employee nr4:
+Rego - 0
