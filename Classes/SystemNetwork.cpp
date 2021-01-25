@@ -314,7 +314,7 @@ void SystemNetwork::read(string file) {
             }
             mo = new MovementOut(v,h,t,l,d,me,price);
             if(!movements->addMovement(mo)){
-              cout<<"write movement failed!";
+                cout<<"write movement failed!";
             }
             f>>s;
         }
@@ -2406,10 +2406,10 @@ void SystemNetwork::concludeIntervention() {
 
 
 void SystemNetwork::readInterventions() {
-   vector<string> v = interventions->showInterventions();
-   for (string s: v)
-       cout << s << endl;
-   utils->waitForInput();
+    vector<string> v = interventions->showInterventions();
+    for (string s: v)
+        cout << s << endl;
+    utils->waitForInput();
 }
 
 
@@ -2460,8 +2460,8 @@ void SystemNetwork::readInterventionsTechnician() {
     for (auto it = BSTItrIn<Intervention>(bst); !it.isAtEnd(); it.advance()) {
         if (it.retrieve().getTechnician()->getName() == s_name) {
             string s = "Start Date: " + it.retrieve().getStartDate()->getInfo() + " - Specialty: " + it.retrieve().getType() +
-                    " - " + it.retrieve().getHighway()->showHighway() +
-                    " - Toll Name: " + it.retrieve().getToll()->getName() + " - Technician: " + it.retrieve().getTechnician()->showTechnician();
+                       " - " + it.retrieve().getHighway()->showHighway() +
+                       " - Toll Name: " + it.retrieve().getToll()->getName() + " - Technician: " + it.retrieve().getTechnician()->showTechnician();
             if (it.retrieve().getState())
                 s += "\n\t\tEnd Date: " + it.retrieve().getEndDate()->getInfo() + " - Duration: " + to_string(it.retrieve().getDuration());
             cout << s << endl;

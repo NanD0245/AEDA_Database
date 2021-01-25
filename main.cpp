@@ -71,6 +71,7 @@ int main(int argc, char* argv[]) {
     Utils utils;
     char* err;
     sqlite3* db;
+    sqlite3_stmt* stmt;
     int rc = sqlite3_open("../DataBase/aeda20-21.db", &db);
     if (rc != SQLITE_OK) {
         cout << "error: " << err << endl;
@@ -86,23 +87,84 @@ int main(int argc, char* argv[]) {
         cout << "EXCEPTION: File" << e.getFile() << "does not exist." << endl;
     }
 
-    for (int i = 0 ; i < system.highways->getNumHighways(); i++){
+    /*sqlite3_prepare(db,"SELECT * from Employees e",-1,&stmt,nullptr);
+
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        string name; int id;
+        id = sqlite3_column_int(stmt,0);
+        name = string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,1)));
+        if (name == "Fernando")
+            cout << "Name: " << name << " - ID: " << id << endl;
+    }*/
+
+    /*for (int i = 0; i < system.employees->getNumEmployees(); i++) {
+        string query = "INSERT INTO Employees (name) VALUES ('" +
+                system.employees->getEmployee(i)->getName() + "')";
+        rc = sqlite3_exec(db, query.c_str(), NULL, NULL, &err);
+        if (rc != SQLITE_OK) {
+            cout << "error: " << err << endl;
+            utils.waitForInput();
+        }
+    }*/
+
+    /*for (int i = 0 ; i < system.highways->getNumHighways(); i++){
         string query = "INSERT INTO Highways (name) VALUES ('" + system.highways->getHighwayIndex(i)->getInfo() + "')";
         rc = sqlite3_exec(db,query.c_str() ,NULL,NULL, &err);
         if (rc != SQLITE_OK) {
             cout << "error: " << err << endl;
             utils.waitForInput();
         }
-        /*for (int j = 0; j < system.highways->getHighwayIndex(i)->getNumTolls(); j++) {
-            query = "INSERT INTO Highways (name) VALUES ('" + system.highways->getHighwayIndex(i)->getInfo() + "')";
+    }*/
+    /*for (int j = 0 ; j < system.highways->getNumHighways(); j++){
+        for (int i = 0; i < system.highways->getHighwayIndex(j)->getNumTolls(); i++) {
+            string query = "INSERT INTO Tolls (highway_id, name,geolocal,highway_kilometer,type) VALUES (" +
+                    to_string(j+1) + ",'" +
+                    system.highways->getHighwayIndex(j)->getTollIndex(i)->getName() + "','" +
+                    system.highways->getHighwayIndex(j)->getTollIndex(i)->getGeolocal() + "'," +
+                    to_string(system.highways->getHighwayIndex(j)->getTollIndex(i)->getKilometer()) + "," +
+                    to_string(system.highways->getHighwayIndex(j)->getTollIndex(i)->getType()) + ")";
             rc = sqlite3_exec(db,query.c_str() ,NULL,NULL, &err);
             if (rc != SQLITE_OK) {
                 cout << "error: " << err << endl;
                 utils.waitForInput();
             }
-        }*/
-    }
-
+        }
+    }*/
+    /*for (int k = 0 ; k < system.highways->getNumHighways(); k++){
+        for (int j = 0; j < system.highways->getHighwayIndex(k)->getNumTolls(); j++) {
+            for (int i = 0; i < system.highways->getHighwayIndex(k)->getTollIndex(j)->getNumLanes(); i++) {
+                cout << "entrei" << endl;
+                Lane* lane = system.highways->getHighwayIndex(k)->getTollIndex(j)->getLane(i);
+                int employee_id;
+                string query;
+                if (lane->getEmployee() == nullptr) {
+                    cout << "entrei1" << endl;
+                    query = "INSERT INTO Lanes (toll_id,lane_number,green_lane) VALUES (" +
+                            to_string(j + 1) + "," +
+                            to_string(system.highways->getHighwayIndex(k)->getTollIndex(j)->getLane(i)->getLaneNumber()) + "," +
+                            to_string(system.highways->getHighwayIndex(k)->getTollIndex(j)->getLane(i)->getGreenLane()) + ")";
+                }
+                else {
+                    cout << "entrei2" << endl;
+                    cout << lane->getEmployee()->getName() << endl;
+                    string query1 = "SELECT * from Employees e where e.name = '" + lane->getEmployee()->getName()+"'";
+                    sqlite3_prepare(db,query1.c_str(),-1,&stmt,nullptr);
+                    sqlite3_step(stmt);
+                    employee_id = sqlite3_column_int(stmt, 0);
+                    query = "INSERT INTO Lanes (employee_id,toll_id,lane_number,green_lane) VALUES (" +
+                            to_string(employee_id) + "," +
+                            to_string(j+1) + "," +
+                            to_string(system.highways->getHighwayIndex(k)->getTollIndex(j)->getLane(i)->getLaneNumber())+","+
+                            to_string(system.highways->getHighwayIndex(k)->getTollIndex(j)->getLane(i)->getGreenLane()) + ")";
+                }
+                rc = sqlite3_exec(db,query.c_str() ,NULL,NULL, &err);
+                if (rc != SQLITE_OK) {
+                    cout << "error: " << err << endl;
+                    utils.waitForInput();
+                }
+            }
+        }
+    }*/
 
     do {
         utils.clrScreen();
