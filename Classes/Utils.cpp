@@ -132,4 +132,30 @@ Date * Utils::getDate() {
     return date;
 }
 
+sqlite3* Utils::openDB() {
+    try {
+        sqlite3*db;
+        char* err;
+        int rc = sqlite3_open("../DataBase/aeda20-21.db", &db);
+        if (rc != SQLITE_OK) {
+            cout << "error: " << err << endl;
+            waitForInput();
+            throw DataBaseDoesNotExist("../DataBase/aeda20-21.db",err);
+        }
+        return db;
+    }
+    catch (DataBaseDoesNotExist &e) {
+        cout << "EXCEPTION: DB in " << e.getDir() << " does not open." << endl << "ERROR: " << e.getErr() << endl;
+    }
+    return nullptr;
+}
+
+void Utils::checkDbErr(int rc) {
+    Utils a;
+    if (rc != SQLITE_OK) {
+        cout << "ERROR: " << err << endl;
+        a.waitForInput();
+    }
+}
+
 

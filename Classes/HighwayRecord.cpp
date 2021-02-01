@@ -12,27 +12,31 @@ Highway * HighwayRecord::getHighway(string name) {
     return nullptr;
 }
 
-Highway * HighwayRecord::getHighwayIndex(int i) {
-    if (i < highways.size())
-        return highways[i];
-    return nullptr;
+Highway * HighwayRecord::getHighwayIndex(int id) {
+    string query = "select * from highways where id = " + to_string(id);
+    sqlite3_prepare(db,query.c_str(),-1,&stmt, nullptr);
+    sqlite3_step(stmt);
+    auto* h = new Highway(string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,1))));
+    return h;
 }
 
 bool HighwayRecord::checkHighwayName(string name) {
-    for (size_t i = 0; i < highways.size(); i++) {
-        if (name == highways[i]->getInfo())
+    string query = "select * from highways";
+    sqlite3_prepare(db,query.c_str(),-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE)
+        if (name == string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,1))))
             return true;
-    }
     return false;
 }
 
 bool HighwayRecord::addHighway(string name) {
-    for (size_t i = 0; i < highways.size(); i++) {
-        if (name == highways[i]->getInfo())
-            return false;
+    if (checkHighwayName(name)) return false;
+    string query = "insert into highways (name) values ('" + name + "')";
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc != SQLITE_OK) {
+        Utils::checkDbErr(rc);
+        return false;
     }
-    auto *a1 = new Highway(name);
-    highways.push_back(a1);
     return true;
 }
 
@@ -40,11 +44,12 @@ void HighwayRecord::addHighway(Highway * h){
     highways.push_back(h);
 }
 
-bool HighwayRecord::removeHighway(int i) {
-    if (i >= highways.size())
-        return false;
-    highways.erase(highways.begin()+i);
-    return true;
+bool HighwayRecord::removeHighway(int id) {
+    string query = "delete from highways where id = " + to_string(id);
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc == SQLITE_OK) return true;
+    Utils::checkDbErr(rc);
+    return false;
 }
 
 bool HighwayRecord::checkTechnicianName(string name) {

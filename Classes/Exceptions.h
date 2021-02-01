@@ -91,4 +91,13 @@ public:
     string getFile() const {return file;}
 };
 
+class DataBaseDoesNotExist {
+    string dir;
+    char* err;
+public:
+    DataBaseDoesNotExist(string dir,char* err) : dir(dir), err(err) {}
+    string getDir() {return dir; }
+    char* getErr()  {return err; }
+};
+
 #endif //AEDA2020_PORTAGENS_EXCEPTIONS_H

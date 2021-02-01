@@ -68,10 +68,10 @@ RM = /home/mim/Documents/JetBrains/CLion/clion-2020.1.1/bin/cmake/linux/bin/cmak
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Datebase
+CMAKE_SOURCE_DIR = /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Datebase/cmake-build-debug
+CMAKE_BINARY_DIR = /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -100,9 +100,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Datebase/cmake-build-debug/CMakeFiles /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Datebase/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/cmake-build-debug/CMakeFiles /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Datebase/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

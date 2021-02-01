@@ -4,6 +4,7 @@ using namespace std;
 
 SystemNetwork::SystemNetwork() {
     highways = new HighwayRecord();
+    highway = new Highway("");
     movements = new MovementRecord();
     vehicles = new VehicleRecord();
     utils = new Utils();
@@ -11,427 +12,6 @@ SystemNetwork::SystemNetwork() {
     interventions = new InterventionRecord();
     owners = new OwnerRecord();
 }
-
-void SystemNetwork::write(){
-    vector<Toll *> t;
-    vector<Lane *> l;
-    ofstream f("../Cache/systemNetworks.txt");
-
-    f<<"HIGHWAYS"<<endl;
-    for (int i = 0;i<highways->getNumHighways();i++){
-        f<< "Highway nr"<<i+1<<": "<< highways->getHighwayIndex(i)->getInfo() <<endl;
-        for(int j=0;j<highways->getHighwayIndex(i)->getNumTolls();j++){
-            f<< "  Toll nr"<<j+1<<":"<<endl;
-            f<<"  "<<highways->getHighwayIndex(i)->getTollIndex(j)->getInfo()<<endl;
-            for(int n=0;n < highways->getHighwayIndex(i)->getTollIndex(j)->readTechniciansv2().size();n++){
-                f<< "    Technician nr"<<n+1<<": "<< highways->getHighwayIndex(i)->getTollIndex(j)->readTechniciansv2()[n]<<endl;
-            }
-
-            for(int k=0;k<highways->getHighwayIndex(i)->getTollIndex(j)->getNumLanes();k++){
-                f<< "    Lane nr"<<k+1<<":"<<endl;
-                f<<"    "<<highways->getHighwayIndex(i)->getTollIndex(j)->getLane(k)->getInfo()<<endl;
-            }
-        }
-    }
-
-    f<<endl<<"VEHICLES"<<endl;
-    f<<"Taxes:";
-    for (int j=0;j<4;j++){
-        f<<" "<<vehicles->getTaxes(j+1);
-    }
-    f<<endl;
-    for(int i=0;i<vehicles->getNumVehicles();i++){
-        f<<"Vehicle nr"<<i+1<<": "<<endl;
-        f<<vehicles->getVehicleIndex(i)->getInfo()<<endl;
-    }
-
-    int n=1;
-    f<<endl<<"MOVEMENTS"<<endl;
-    for(int i=0;i<movements->getNumMovements();i++){
-        if(movements->getMovements()[i]->getType()) {
-            f<<"Movement nr"<<n<<": "<<endl;
-            f <<movements->getMovementIndex(i)->getInfo()<<endl;
-            n++;
-        }
-    }
-    f<<endl<<"EMPLOYEES"<<endl;
-    for(int i=0;i<employees->getNumEmployees();i++){
-        f<<"Employee nr"<<i+1<<":"<<endl;
-        f<<employees->getEmployeeIndex(i)->getInfo()<<endl;
-    }
-
-
-    /*f<<endl<<"OWNERS"<<endl;
-    for(int i=0;i<owners->getNumOwners();i++){
-        f<<"Owner nr"<<i+1<<":"<<endl;
-        f<<owners->getOwner(i).getInfo()<<endl;
-    }*/
-    f<<endl<<"OWNERS"<<endl;
-    int k=1;
-    auto a = owners->getOwners();
-    for(const auto & it : a){
-        f<<"Owner nr"<<k<<":"<<endl;
-        k++;
-        f<<it.getInfo()<<endl;
-    }
-
-    //SUM WRONG
-    f<<endl<<"INTERVENTIONS"<<endl;
-    int j=1;
-    BST<Intervention> bst = interventions->getInterventions();
-    auto it = BSTItrIn<Intervention>(bst);
-    for(; !it.isAtEnd();it.advance()){
-        if (it.retrieve().getState()) {
-            f << "Intervention nr" << j << ":" << endl;
-            j++;
-            f << it.retrieve().getInfo() << endl;
-        }
-    }
-    f.close();
-}
-
-void SystemNetwork::read(string file) {
-    ifstream f(file);
-    if (!f.is_open()) {throw FileDoesNotExist(file); }
-    int number,code;
-    bool tf,movement_type;
-    string s,name,speciality, geolocal,plate,date1,date2,date3,date4,date, type, hname, tname, line;
-    float highway_kilometer,tax1,tax2,tax3,tax4 , performance, duration;
-
-    Toll* t;
-    Lane* l;
-    Vehicle* v;
-    Date *d;
-    Highway* h;
-    Employee* e;
-    Technician* tech;
-    Owner *ow;
-    Intervention *itv;
-
-    Toll* tt;
-    Lane* ll;
-    Vehicle* vv;
-    Date *dd;
-    Highway* hh;
-
-    MovementEntry* me;
-    MovementOut* mo;
-    float distance;
-    float price;
-
-    f>>s;
-    if( s=="HIGHWAYS") {
-        f>>s;
-        while (s == "Highway") {
-            f >> s;//discard
-            f >> s;
-            name = "";
-            while (!(s == "-" || s == "Lane" ||s == "Toll" || s == "Highway" || s == "VEHICLE" || s == "MOVEMENTS" || s == "EMPLOYEES")) {
-                name += s + " ";
-                f >> s;
-            }
-            name.pop_back();
-            h = new Highway(name);
-            while (s == "Toll") {//Toll
-                f >> s;//discard (nr:)
-                f >> s;
-                name = "";
-                while (!(s == "Technician" || s == "-" || s == "Lane" ||s == "Toll" || s == "Highway" || s == "VEHICLE" || s == "MOVEMENTS" || s == "EMPLOYEES")) {
-                    name += s + " ";
-                    f >> s;
-                }
-                name.pop_back();
-                f >> s;
-                geolocal = "";
-                while (!(s == "Technician" || s == "-" || s == "Lane" ||s == "Toll" || s == "Highway" || s == "VEHICLE" || s == "MOVEMENTS" || s == "EMPLOYEES")) {
-                    geolocal += s + " ";
-                    f >> s;
-                }
-                geolocal.pop_back();
-                f >> highway_kilometer;
-                f >> s;//discard (-)
-                f >> tf;
-                if (tf) {
-                    t = new TollOut(name, geolocal, highway_kilometer);
-                } else {
-                    t = new TollEntrance(name, geolocal, highway_kilometer);
-                }
-                f >> s;
-                while(s == "Technician"){
-                    f >> s;//discard (nr:)
-                    f >> s;
-                    name = "";
-                    while (!(s == "Technician" || s == "-" || s == "Lane" ||s == "Toll" || s == "Highway" || s == "VEHICLE" || s == "MOVEMENTS" || s == "EMPLOYEES")) {
-                        name += s + " ";
-                        f >> s;
-                    }
-                    name.pop_back();
-                    f >> speciality;
-                    f >> s;//discard (-)
-                    f >> performance;
-                    f >> s;//discard (-)
-                    f >> number;
-
-                    tech = new Technician(name,speciality);
-                    tech->setPerformance(performance);
-                    tech->setIntervention(number);
-                    t->addTechnician(tech);
-
-                    f >> s;
-                }
-
-                while (s == "Lane") {//Lane
-                    f >> s;//discard (nr:)
-                    f >> number;
-                    f >> s;//discard (-)
-                    f >> tf;
-                    f >> s;
-                    if (s == "-") {
-                        f >> s;
-                        name = "";
-                        while (s != "-") {
-                            name += s + " ";
-                            f >> s;
-                        }
-                        name.pop_back();
-                        f >> code;
-                        if (code >= employees->getCode()) {
-                            code++;
-                            employees->setCode(code);
-                            code--;
-                        }
-                        e = new Employee(name, code);
-                        employees->addEmployee(e);
-                        l = new LaneEmployee(number, tf, e);
-                        t->addLane(l);
-                        f>>s;
-                    } else {
-                        l = new Lane(number, tf);
-                        t->addLane(l);
-                    }
-
-                    if(s=="Lane"){
-                        continue;
-                    }
-                    else {
-                        break;
-                    }
-
-                }
-                h->addToll(t);
-                if(s=="Toll"){
-                    continue;
-                }
-                else {
-                    break;
-                }
-
-            }
-            highways->addHighway(h);
-            if(s=="Highway"){
-                continue;
-            }
-            else {
-                break;
-            }
-        }
-    }
-    if(s=="VEHICLES"){
-        f>>s;
-        f>>tax1;
-        f>>tax2;
-        f>>tax3;
-        f>>tax4;
-        vehicles->setTaxes(tax1,tax2,tax3,tax4);
-        f>>s;
-        while(s=="Vehicle"){
-            f>>s; //discard
-            f>>plate;
-            f>>s; //discard
-            f>>number;
-            f>>s; //discard
-            f>>tf;
-            vehicles->addVehicle(plate,number,tf);
-            f>>s;
-        }
-    }
-
-    if(s=="MOVEMENTS"){
-        f>>s;
-        while(s=="Movement"){
-            f>>s; //discard
-            f>>date1;
-            f>>date2;
-            date=date1+" "+date2;
-            d = new Date(date);
-            f>>s; //discard
-
-            f>>name;
-            h = highways->getHighway(name);
-            f>>s; //discard
-
-            f>>name;
-            t = h->getToll(name);
-            f>>s; //discard
-
-            f>>number;
-            l= t->getLane(number);
-            f>>s; //discard
-
-            f>>name;
-            v=vehicles->getVehicle(name);
-            f>>s;//discard
-
-            f>>distance;
-            f>>s;//discard
-
-            f>>price;
-            f>>s;//discard
-
-            f>>date1;
-            f>>date2;
-            date=date1+" "+date2;
-            dd =new Date(date);
-            f>>s; //discard
-
-            f>>name;
-            hh=highways->getHighway(name);
-            f>>s; //discard
-
-            f>>name;
-            tt = h->getToll(name);
-            f>>s; //discard
-
-            f>>number;
-            ll= t->getLane(number);
-            f>>s; //discard
-
-            f>>name;
-            vv=vehicles->getVehicle(name);
-            me = new MovementEntry(vv,hh,tt,ll,dd);
-            if(!movements->addMovement(me)){
-                cout<<"write movement failed!";
-            }
-            mo = new MovementOut(v,h,t,l,d,me,price);
-            if(!movements->addMovement(mo)){
-                cout<<"write movement failed!";
-            }
-            f>>s;
-        }
-    }
-    if(s=="EMPLOYEES"){
-        f>>s;
-        while(s=="Employee"){
-            bool check = false;
-            f>>s;//discard
-            name = "";
-            while (s != "-") {
-                f >> s;
-                name += s + " ";
-            }
-            name = name.substr(0,name.size()-3);
-            for(int i=0;i<employees->getNumEmployees();i++){
-                if(name==employees->getEmployeeIndex(i)->getName()){
-                    f>>s;
-                    f>>s;
-                    check = true;
-                }
-            }
-            if (check)
-                continue;
-            f>>code;
-            if (code >= employees->getCode()) {
-                code++;
-                employees->setCode(code);
-                code--;
-            }
-            e=new Employee(name,code);
-            employees->addEmployee(e);
-            f>>s;
-        }
-    }
-    if(s == "OWNERS"){
-        f>>s;
-        while(s=="Owner"){
-            f>>s;//discard
-            name = "";
-            while (s != ":") {
-                f >> s;
-                name += s + " ";
-            }
-            name = name.substr(0,name.size()-3);
-            ow = new Owner(name);
-            getline(f,line);
-            stringstream ln(line);
-            while(!ln.eof()) {
-                ln >> s;
-                if (s == ":") break;
-                plate = s;
-                ln >> number;
-                ln >> tf;
-                v = vehicles->getVehicle(plate);
-                if (v == NULL) {
-                    v = new Vehicle(plate, number, vehicles->getTaxes(number));
-                    ow->addVehicle(v);
-                } else {
-                    ow->addVehicle(v);
-                }
-            }
-            owners->addOwner(*ow);
-            f>>s;
-        }
-    }
-    if(s=="INTERVENTIONS"){
-        if(f.eof()){
-            f.close();
-            return;
-        }
-        f>>s;
-        while(s=="Intervention"){
-            f>>s;//discard
-            f>>type;
-            f>>s;//discard
-            f>>hname;
-            f>>s;//discard
-            f>>tname;
-            f>>s;//discard
-            f>>date1;
-            f>>date2;
-            f>>s;//discard
-            f>>date3;
-            f>>date4;
-            f>>s;
-            name = "";
-            do {
-                f >> s;
-                name += s + " ";
-            } while (s != "-");
-            name = name.substr(0,name.size()-3);
-            f>>duration;
-            f>>s;//discard
-            f>>tf;
-            h = highways->getHighway(hname);
-            t = h->getToll(tname);
-            date1 += " " + date2;
-            d = new Date(date1);
-            date3 += " " + date4;
-            dd = new Date(date3);
-
-            tech = h->getTechnicianName(name);
-
-            itv = new Intervention(type,h,t,d,dd,tech,duration,tf);
-            interventions->addIntervention(*itv);
-            if(f.eof()){
-                break;
-            }
-            f>>s;
-        }
-    }
-    f.close();
-
-}
-
-
 
 void SystemNetwork::manageHighways() {
     int index;
@@ -460,49 +40,49 @@ void SystemNetwork::manageHighways() {
                 break;
             case 5:
                 utils->clrScreen();
-                auto *h1 = chooseHighway();
+                int id = chooseHighway();
                 utils->clrScreen();
-                if (h1 == nullptr)
+                if (id == -1)
                     break;
-                manageHighway(h1);
+                manageHighway(id);
                 utils->clrScreen();
                 break;
         }
     } while(index);
 }
 
-void SystemNetwork::manageHighway(Highway* highway) {
+void SystemNetwork::manageHighway(int highway_id) {
     int index;
     do {
         index = utils->ShowMenu({"Create Toll", "Update Toll", "Delete Toll", "Read Tolls","Manage Toll"});
         switch(index) {
             case 1:
                 utils->clrScreen();
-                createToll(highway);
+                //createToll(highway);
                 utils->clrScreen();
                 break;
             case 2:
                 utils->clrScreen();
-                updateToll(highway);
+                //updateToll(highway);
                 utils->clrScreen();
                 break;
             case 3:
                 utils->clrScreen();
-                deleteToll(highway);
+                //deleteToll(highway);
                 utils->clrScreen();
                 break;
             case 4:
                 utils->clrScreen();
-                readTolls(highway);
+                readTolls(highway_id);
                 utils->clrScreen();
                 break;
             case 5:
                 utils->clrScreen();
-                auto *t1 = chooseToll(highway);
+                //auto *t1 = chooseToll(highway);
                 utils->clrScreen();
-                if (t1 == nullptr)
-                    break;
-                manageToll(t1);
+                //if (t1 == nullptr)
+                //    break;
+                //manageToll(t1);
                 utils->clrScreen();
                 break;
         }
@@ -704,7 +284,7 @@ void SystemNetwork::manageMovementsHighway() {
 }
 
 void SystemNetwork::manageMovementsToll() {
-    int index;
+    /*int index;
     Highway* a1;
     do {
         index = utils->ShowMenu({"By toll name", "By toll worth", "By toll type"});
@@ -749,11 +329,11 @@ void SystemNetwork::manageMovementsToll() {
                 }
                 break;
         }
-    } while (index);
+    } while (index);*/
 }
 
 void SystemNetwork::manageMovementsLane() {
-    int index;
+    /*int index;
     Highway* a1;
     Toll* t1;
     do {
@@ -792,7 +372,7 @@ void SystemNetwork::manageMovementsLane() {
                 }
                 break;
         }
-    } while(index);
+    } while(index);*/
 }
 
 void SystemNetwork::manageMovementsCar() {
@@ -946,24 +526,35 @@ void SystemNetwork::createHighway() {
 }
 
 void SystemNetwork::readHighways() {
-    cout << "Highways: " << highways->getNumHighways() << endl;
-
-    for (int i = 0; i < highways->getNumHighways(); i++) {
-        cout << i+1 << " - " << highways->getHighwayIndex(i)->showHighway() << endl;
+    sqlite3_prepare(db,"select count(*) from Highways", -1, &stmt, nullptr);
+    sqlite3_step(stmt);
+    cout << "Highways: " << sqlite3_column_int(stmt,0) << endl;
+    sqlite3_prepare(db,"select * from Highways", -1, &stmt, nullptr);
+    int count = 0;
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        cout << ++count << " - Highway Name: " << sqlite3_column_text(stmt,1) << endl;
     }
     utils->waitForInput();
+    /*sqlite3_prepare(db,"select count(*) from Highways; select * from Highways;", -1, &stmt, nullptr);
+    for (int i = 0; sqlite3_step(stmt) != SQLITE_DONE; i++) {
+        if (i == 0)
+            cout << "Highways: " << sqlite3_column_int(stmt,0) << endl;
+        else
+            cout << sqlite3_column_int(stmt,0) << " - " << sqlite3_column_text(stmt,1) << endl;
+        //sqlite3_step(stmt);
+    }*/
 }
 
 void SystemNetwork::updateHighway() {
     string s_index, s_name, s_menu;
-    int index;
-    index = chooseIndexHighway();
-    if (index > -1)
+    int id;
+    id = chooseHighway();
+    if (id > -1)
         while (s_name != "EXIT") {
             cout << "Input the highway name: (if you want to exit without updating a highway please input EXIT)" << endl;
             getline(cin, s_name);
             if (s_name != "EXIT" && !highways->checkHighwayName(s_name)) {
-                highways->getHighwayIndex(index)->setName(s_name);
+                highway->setName(id,s_name);
                 cout << "Highway updated with success!" << endl;
                 utils->waitForInput();
                 break;
@@ -974,37 +565,41 @@ void SystemNetwork::updateHighway() {
 
 void SystemNetwork::deleteHighway() {
     string s_index, s_name;
-    int index;
-    index = chooseIndexHighway();
-    if (index > -1)
-        if (highways->removeHighway(index)) {
+    int id;
+    id = chooseHighway();
+    if (id > -1)
+        if (highways->removeHighway(id)) {
             cout << "Highway deleted with success!" << endl;
             utils->waitForInput();
         }
 }
 
-Highway* SystemNetwork::chooseHighway() {
+int SystemNetwork::chooseHighway() {
     int index;
-    index = chooseIndexHighway();
-    while((index < -1)) {
-        cout << "Invalid Number." << endl;
-        index = utils->getNumber(highways->getNumHighways()) -1;
+    vector<int> id;
+    vector<string> options;
+    sqlite3_prepare_v2(db,"select * from highways;",-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        id.push_back(sqlite3_column_int(stmt,0));
+        options.push_back("Highway Name: " + string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,1))));
     }
+    index = utils->ShowMenu(options)-1;
+    utils->clrScreen();
     if (index == -1)
-        return nullptr;
-    return highways->getHighwayIndex(index);
+        return -1;
+    return id[index];
 }
 
-int SystemNetwork::chooseIndexHighway() const {
-    string s_menu;
-    vector<string> v1;
-    for (int i = 0; i < highways->getNumHighways(); i++) {
-        s_menu = highways->getHighwayIndex(i)->showHighway();
-        v1.push_back(s_menu);
+/*int SystemNetwork::chooseIndexHighway() const {
+    vector<string> options;
+    sqlite3_prepare_v2(db,"select name from highways;",-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        options.push_back("Highway Name: " + string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,0))));
     }
     utils->clrScreen();
-    return utils->ShowMenu(v1)-1;
-}
+    return utils->ShowMenu(options)-1;
+    return 0;
+}*/
 
 
 
@@ -1041,12 +636,27 @@ void SystemNetwork::createToll(Highway *highway) {
     }
 }
 
-void SystemNetwork::readTolls(Highway* highway) {
-    string s_type;
+void SystemNetwork::readTolls(int highway_id) {
+    string type, query = string("select count(*) from tolls where highway_id = ") + to_string(highway_id);
+    sqlite3_prepare(db,query.c_str(),-1,&stmt, nullptr);
+    sqlite3_step(stmt);
+    cout << "Tolls: " << sqlite3_column_int(stmt,0) << endl;
+    query = "select * from tolls where highway_id = " + to_string(highway_id);
+    sqlite3_prepare(db,query.c_str(),-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        if (sqlite3_column_int(stmt,5) == 0) type = "Entrance";
+        else type = "Exit";
+        cout << "Toll Name: " << sqlite3_column_text(stmt,2) << " - Geographic Location: " << sqlite3_column_text(stmt,3)
+                                << " - Highway Kilometer: " << sqlite3_column_double(stmt,4) << " - Type: " << type << endl;
+    }
+
+
+
+    /*string s_type;
     cout << "Tolls: " << highway->getNumTolls() << endl;
     for (size_t i = 0; i < highway->getNumTolls(); i++) {
         cout << highway->getTollIndex(i)->showToll() << endl;
-    }
+    }*/
     utils->waitForInput();
 }
 
@@ -1528,7 +1138,7 @@ int SystemNetwork::adviceOutLane(Vehicle* vehicle, Toll * toll, Date * date) {
 
 void SystemNetwork::addEntryMovement() {
 
-    string s_plate,s_name;
+    /*string s_plate,s_name;
     int index = -1, lane_index;
     Vehicle* vehicle = nullptr;
 
@@ -1624,11 +1234,11 @@ void SystemNetwork::addEntryMovement() {
         cout << "Entry movement created with success!" << endl;
         break;
     }
-    utils->waitForInput();
+    utils->waitForInput();*/
 }
 
 void SystemNetwork::addExitMovement() {
-    string s_plate;
+    /*string s_plate;
     int lane_index;
     Movement* entry = nullptr;
     Highway* highway = nullptr;
@@ -1708,7 +1318,7 @@ void SystemNetwork::addExitMovement() {
         cout << "Exit movement created with success!" << endl;
         break;
     }
-    utils->waitForInput();
+    utils->waitForInput();*/
 }
 
 void SystemNetwork::showMovementsByHighwayName() {
@@ -2341,7 +1951,7 @@ void SystemNetwork::manageOwner(Owner o1) {
 
 
 void SystemNetwork::addIntervention() {
-    string s_type;
+    /*string s_type;
     Highway* highway = chooseHighway();
     if (highway == nullptr) {
         utils->waitForInput();
@@ -2386,7 +1996,7 @@ void SystemNetwork::addIntervention() {
     Intervention i(s_type,technician,start_date, highway, toll);
     if (interventions->addIntervention(i))
         cout << "Intervention started with success!" << endl;
-    utils->waitForInput();
+    utils->waitForInput();*/
 }
 
 
@@ -2507,7 +2117,7 @@ void SystemNetwork::readInterventionsType() {
 
 
 void SystemNetwork::createTechnician() {
-    int index;
+    /*int index;
     Highway* h = chooseHighway();
     if (h == nullptr)
         return;
@@ -2542,13 +2152,13 @@ void SystemNetwork::createTechnician() {
         }
         else if (s_name!= "EXIT")
             cout << "ERROR: name of technician already exists." << endl;
-    }
+    }*/
 }
 
 
 
 void SystemNetwork::readTechnicians() {
-    int index;
+    /*int index;
     vector<string> techs,techs1;
     index = utils->ShowMenu({"All technicians", "Technicians on a specific toll"});
     switch (index) {
@@ -2583,13 +2193,13 @@ void SystemNetwork::readTechnicians() {
             }
             utils->waitForInput();
             break;
-    }
+    }*/
 }
 
 
 
 void SystemNetwork::updateTechnician() {
-    Highway* h = chooseHighway();
+    /*Highway* h = chooseHighway();
     if (h == nullptr)
         return;
     Toll* t = chooseToll(h);
@@ -2649,13 +2259,13 @@ void SystemNetwork::updateTechnician() {
             }
             utils->waitForInput();
             break;
-    }
+    }*/
 }
 
 
 
 void SystemNetwork::deleteTechnician() {
-    Highway* h = chooseHighway();
+    /*Highway* h = chooseHighway();
     if (h == nullptr)
         return;
     Toll* t = chooseToll(h);
@@ -2675,7 +2285,7 @@ void SystemNetwork::deleteTechnician() {
     if (t->deleteTechnician(t_name))
         cout << "Technician deleted with success!" << endl;
     else cout << "ERROR: Technician doesn't exist." << endl;
-    utils->waitForInput();
+    utils->waitForInput();*/
 }
 
 

@@ -11,23 +11,30 @@ CMakeFiles/aeda2020_portagens.dir/Classes/EmployeeRecord.cpp.o: ../Classes/Emplo
 CMakeFiles/aeda2020_portagens.dir/Classes/EmployeeRecord.cpp.o: ../Classes/EmployeeRecord.cpp
 CMakeFiles/aeda2020_portagens.dir/Classes/EmployeeRecord.cpp.o: ../Classes/EmployeeRecord.h
 
+CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Highway.cpp
 CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Highway.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Lane.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Technician.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Toll.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Highway.cpp.o: ../Classes/Utils.h
 
+CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Highway.h
 CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/HighwayRecord.cpp
 CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/HighwayRecord.h
 CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Lane.h
 CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Technician.h
 CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Toll.h
+CMakeFiles/aeda2020_portagens.dir/Classes/HighwayRecord.cpp.o: ../Classes/Utils.h
 
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Highway.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/HighwayRecord.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Intervention.cpp
@@ -35,9 +42,11 @@ CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Interve
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Lane.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Technician.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Toll.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Intervention.cpp.o: ../Classes/Utils.h
 
 CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/Highway.h
 CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/HighwayRecord.h
 CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/Intervention.h
@@ -49,12 +58,16 @@ CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/T
 CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/Utils.h
 CMakeFiles/aeda2020_portagens.dir/Classes/InterventionRecord.cpp.o: ../Classes/bst.h
 
+CMakeFiles/aeda2020_portagens.dir/Classes/Lane.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Lane.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Lane.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Lane.cpp.o: ../Classes/Lane.cpp
 CMakeFiles/aeda2020_portagens.dir/Classes/Lane.cpp.o: ../Classes/Lane.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Lane.cpp.o: ../Classes/Utils.h
 
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Highway.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/HighwayRecord.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Lane.h
@@ -62,10 +75,12 @@ CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Movement.cp
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Movement.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Technician.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Toll.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Utils.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Movement.cpp.o: ../Classes/Vehicle.h
 
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Highway.h
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/HighwayRecord.h
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Lane.h
@@ -74,6 +89,7 @@ CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Movem
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/MovementRecord.h
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Technician.h
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Toll.h
+CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Utils.h
 CMakeFiles/aeda2020_portagens.dir/Classes/MovementRecord.cpp.o: ../Classes/Vehicle.h
 
 CMakeFiles/aeda2020_portagens.dir/Classes/Owner.cpp.o: ../Classes/Owner.cpp
@@ -110,13 +126,17 @@ CMakeFiles/aeda2020_portagens.dir/Classes/SystemNetwork.cpp.o: ../Classes/bst.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Technician.cpp.o: ../Classes/Technician.cpp
 CMakeFiles/aeda2020_portagens.dir/Classes/Technician.cpp.o: ../Classes/Technician.h
 
+CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Date.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Employee.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Lane.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Technician.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Toll.cpp
 CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Toll.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Toll.cpp.o: ../Classes/Utils.h
 
 CMakeFiles/aeda2020_portagens.dir/Classes/Utils.cpp.o: ../Classes/Date.h
+CMakeFiles/aeda2020_portagens.dir/Classes/Utils.cpp.o: ../Classes/Exceptions.h
 CMakeFiles/aeda2020_portagens.dir/Classes/Utils.cpp.o: ../Classes/Utils.cpp
 CMakeFiles/aeda2020_portagens.dir/Classes/Utils.cpp.o: ../Classes/Utils.h
 

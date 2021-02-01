@@ -2,11 +2,15 @@
 #define AEDA2020_PORTAGENS_UTILS_H
 
 #include "Date.h"
+#include "Exceptions.h"
 #include <ctime>
 #include <string>
 #include <vector>
+#include <sqlite3.h>
 
 using namespace std;
+
+extern char* err;
 
 /**
  * Utils class is a class that has diverse functions used to manage the terminal menu and allows
@@ -64,6 +68,8 @@ public:
      * @return date inputted by the user
      */
     Date* getDate();
+    sqlite3* openDB();
+    static void checkDbErr(int rc);
 };
 
 

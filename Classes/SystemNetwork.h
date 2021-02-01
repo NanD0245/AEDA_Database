@@ -18,6 +18,7 @@
 
 using namespace std;
 
+
 /**
  * SystemNetwork class is a class that manages all the other classes, effectively allowing the user to
  * create, read, update and delete all the various objects that fulfill the project, i.e. administrating
@@ -33,12 +34,28 @@ using namespace std;
 class SystemNetwork {
 public:
     HighwayRecord* highways;
+    Highway* highway;
     MovementRecord* movements;
     VehicleRecord* vehicles;
     Utils* utils;
     EmployeeRecord* employees;
     InterventionRecord* interventions;
     OwnerRecord* owners;
+
+    /*int Checkdb() {
+        sqlite3* db = utils->openDB();
+        sqlite3_stmt* stmt;
+        sqlite3_prepare(db,"SELECT * from Employees e",-1,&stmt,nullptr);
+
+        while (sqlite3_step(stmt) != SQLITE_DONE) {
+            string name; int id;
+            id = sqlite3_column_int(stmt,0);
+            name = string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,1)));
+            cout << "Name: " << name << " - ID: " << id << endl;
+        }
+        return 0;
+    }*/
+
 
     /**
      * The SystemNetwork constructor initializes all of its attributes using its' corresponding classes' constructors.
@@ -56,7 +73,7 @@ public:
      * or update, read, delete and manage already existing Toll objects.
      * @param Highway object which the user will manage
      */
-    void manageHighway(Highway * highway);
+    void manageHighway(int highway_id);
 
     /**
      * Allows the user to either create a new Lane object (in current Toll object)
@@ -144,7 +161,7 @@ public:
      * the program continues to ask the user for a valid index.
      * @return nullptr if index is -1, the selected Highway otherwise
      */
-    Highway* chooseHighway();
+    int chooseHighway();
 
     /**
      *
@@ -164,7 +181,7 @@ public:
      * Prints information in the console about all Toll objects that belong to the provided Highway
      * @param highway is the selected Highway object referred above
      */
-    void readTolls(Highway * highway);
+    void readTolls(int highway_id);
 
     /**
      * Allows the user to select a Toll that belongs to the Highway object, and then update its attributes
@@ -436,12 +453,12 @@ public:
      * reads file '../Cache/systemNetworks.txt' and creates objects that represent the information of the file
      * @param file is a .txt file (e.g. '../Cache/systemNetworks.txt' file)
      */
-    void read(string file);
+    //void read(string file);
 
     /**
      * writes file '../Cache/systemNetworks.txt' according to the objects that make up the program's data
      */
-    void write();
+    //void write();
 
     /**
      * Allows the user to create, read, update or delete the Technician objects.

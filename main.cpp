@@ -64,30 +64,61 @@ bool SetupConsole() {
 
 using namespace std;
 
+sqlite3* db;
+sqlite3_stmt* stmt;
+char* err;
+
 int main(int argc, char* argv[]) {
     #ifdef _WIN32
         SetupConsole();
     #endif
     Utils utils;
-    char* err;
-    sqlite3* db;
-    sqlite3_stmt* stmt;
-    int rc = sqlite3_open("../DataBase/aeda20-21.db", &db);
-    if (rc != SQLITE_OK) {
-        cout << "error: " << err << endl;
-        utils.waitForInput();
-    }
+
     SystemNetwork system;
 
     int index;
-    try {
-        system.read(file);
-    }
-    catch (FileDoesNotExist &e) {
-        cout << "EXCEPTION: File" << e.getFile() << "does not exist." << endl;
-    }
+    db = utils.openDB();
+    do {
+        utils.clrScreen();
 
-    /*sqlite3_prepare(db,"SELECT * from Employees e",-1,&stmt,nullptr);
+        index = utils.ShowMenu({"Manage Movements", "Manage Highways", "Manage Employees" , "Manage Vehicles",
+                                "Input Taxes for vehicles", "Manage Interventions", "Manage Technicians",
+                                "Manage Owners", "Statistics"});
+        switch (index) {
+            case(1):
+                system.manageMovements();
+                break;
+            case(2):
+                system.manageHighways();
+                break;
+            case(3):
+                system.manageEmployee();
+                break;
+            case(4):
+                system.manageVehicle();
+                break;
+            case 5:
+                system.getTaxesFromUser();
+                break;
+            case 6:
+                system.manageInterventions();
+                break;
+            case 7:
+                system.manageTechnicians();
+                break;
+            case 8:
+                system.manageOwners();
+                break;
+            case 9:
+                system.manageStatistics();
+                break;
+        }
+    } while (index);
+    return 0;
+}
+
+
+/*sqlite3_prepare(db,"SELECT * from Employees e",-1,&stmt,nullptr);
 
     while (sqlite3_step(stmt) != SQLITE_DONE) {
         string name; int id;
@@ -204,43 +235,3 @@ int main(int argc, char* argv[]) {
             string query;
         }
     }*/
-
-    do {
-        utils.clrScreen();
-
-        index = utils.ShowMenu({"Manage Movements", "Manage Highways", "Manage Employees" , "Manage Vehicles",
-                                "Input Taxes for vehicles", "Manage Interventions", "Manage Technicians",
-                                "Manage Owners", "Statistics"});
-        switch (index) {
-            case(1):
-                system.manageMovements();
-                break;
-            case(2):
-                system.manageHighways();
-                break;
-            case(3):
-                system.manageEmployee();
-                break;
-            case(4):
-                system.manageVehicle();
-                break;
-            case 5:
-                system.getTaxesFromUser();
-                break;
-            case 6:
-                system.manageInterventions();
-                break;
-            case 7:
-                system.manageTechnicians();
-                break;
-            case 8:
-                system.manageOwners();
-                break;
-            case 9:
-                system.manageStatistics();
-                break;
-        }
-    } while (index);
-    system.write();
-    return 0;
-}

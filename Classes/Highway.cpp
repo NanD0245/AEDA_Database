@@ -26,7 +26,12 @@ string Highway::showHighway() const {
     return "Highway Name: " + name;
 }
 
-void Highway::setName(const string new_name) { name = new_name; }
+void Highway::setName(int highway_id, const string new_name) {
+    string query = "update highways set name = '" + new_name + "' where id = " + to_string(highway_id);
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc != SQLITE_OK)
+        Utils::checkDbErr(rc);
+}
 
 bool Highway::addToll(string name, string geolocal, float highway_kilometer,bool type) {
     if (!type) {

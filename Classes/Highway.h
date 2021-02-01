@@ -3,6 +3,8 @@
 
 #include "Toll.h"
 
+
+
 /**
  * Highway class is a class that aggregates different tolls.
  *
@@ -54,7 +56,7 @@ public:
     /**
      * @param new_name updates the Highway's name to desired new name
      */
-    void setName(string new_name);
+    void setName(int highway_id, string new_name);
 
     /**
      * addToll function creates and adds a toll (that isn't already in the 'tolls' container)

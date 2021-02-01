@@ -3,7 +3,12 @@
 #define AEDA2020_PORTAGENS_LANE_H
 
 #include "Employee.h"
+#include "Utils.h"
 #include <string>
+#include <sqlite3.h>
+
+extern sqlite3* db;
+extern sqlite3_stmt* stmt;
 
 using namespace std;
 
