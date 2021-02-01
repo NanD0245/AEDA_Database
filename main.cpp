@@ -95,9 +95,9 @@ int main(int argc, char* argv[]) {
         name = string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,1)));
         if (name == "Fernando")
             cout << "Name: " << name << " - ID: " << id << endl;
-    }*/
+    }
 
-    /*for (int i = 0; i < system.employees->getNumEmployees(); i++) {
+    for (int i = 0; i < system.employees->getNumEmployees(); i++) {
         string query = "INSERT INTO Employees (name) VALUES ('" +
                 system.employees->getEmployee(i)->getName() + "')";
         rc = sqlite3_exec(db, query.c_str(), NULL, NULL, &err);
@@ -105,17 +105,17 @@ int main(int argc, char* argv[]) {
             cout << "error: " << err << endl;
             utils.waitForInput();
         }
-    }*/
+    }
 
-    /*for (int i = 0 ; i < system.highways->getNumHighways(); i++){
+    for (int i = 0 ; i < system.highways->getNumHighways(); i++){
         string query = "INSERT INTO Highways (name) VALUES ('" + system.highways->getHighwayIndex(i)->getInfo() + "')";
         rc = sqlite3_exec(db,query.c_str() ,NULL,NULL, &err);
         if (rc != SQLITE_OK) {
             cout << "error: " << err << endl;
             utils.waitForInput();
         }
-    }*/
-    /*for (int j = 0 ; j < system.highways->getNumHighways(); j++){
+    }
+    for (int j = 0 ; j < system.highways->getNumHighways(); j++){
         for (int i = 0; i < system.highways->getHighwayIndex(j)->getNumTolls(); i++) {
             string query = "INSERT INTO Tolls (highway_id, name,geolocal,highway_kilometer,type) VALUES (" +
                     to_string(j+1) + ",'" +
@@ -129,8 +129,8 @@ int main(int argc, char* argv[]) {
                 utils.waitForInput();
             }
         }
-    }*/
-    /*for (int k = 0 ; k < system.highways->getNumHighways(); k++){
+    }
+    for (int k = 0 ; k < system.highways->getNumHighways(); k++){
         for (int j = 0; j < system.highways->getHighwayIndex(k)->getNumTolls(); j++) {
             for (int i = 0; i < system.highways->getHighwayIndex(k)->getTollIndex(j)->getNumLanes(); i++) {
                 cout << "entrei" << endl;
@@ -163,6 +163,45 @@ int main(int argc, char* argv[]) {
                     utils.waitForInput();
                 }
             }
+        }
+    }
+    for (int i = 0; i < system.vehicles->getNumVehicles(); i++) {
+        Vehicle* v = system.vehicles->getVehicleIndex(i);
+        string query = "insert into Vehicles (plate,v_class,greenlane,tax) values ('" +
+                v->getPlate() + "'," + to_string(v->getClass()) + "," +
+                to_string(v->getGreenLaneBool()) + "," + to_string(v->getTax()) + ")";
+        rc = sqlite3_exec(db, query.c_str(), NULL, NULL, &err);
+        if (rc != SQLITE_OK) {
+            cout << "erro: " << err << endl;
+            utils.waitForInput();
+        }
+    }
+    for (int i = 0; i < system.owners->getNumOwners(); i++) {
+        Owner o = system.owners->getOwner(i);
+        string query1 = "insert into Owners (name) values ('" + o.getName() + "')";
+        rc = sqlite3_exec(db,query1.c_str(), NULL, NULL, &err);
+        if (rc != SQLITE_OK){
+            cout << "error: " << err << endl;
+            utils.waitForInput();
+        }
+        vector<Vehicle*> v = o.getVehicles();
+        for (int j = 0; j < v.size(); j++) {
+            string query2 = "update Vehicles set owner_id=" + to_string(i+1) +
+                    " where plate = '" + v[j]->getPlate()+ "'";
+            rc = sqlite3_exec(db, query2.c_str(), NULL,NULL,&err);
+            if (rc != SQLITE_OK) {
+                cout << "error: " << err << endl;
+                utils.waitForInput();
+            }
+        }
+    }
+    vector<Movement*> v = system.movements->getMovements();
+    for (int i = 0; i < v.size(); i++) {
+        if (v[i]->getType()) {
+            string query = "insert into Movements (type,vehicle_id,highway_id,";
+        }
+        else {
+            string query;
         }
     }*/
 
