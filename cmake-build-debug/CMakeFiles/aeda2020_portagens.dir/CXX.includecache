@@ -32,25 +32,13 @@ vector
 string
 -
 
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Highway.cpp
-Highway.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Highway.h
-
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Highway.h
 Toll.h
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Toll.h
 
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/HighwayRecord.cpp
-HighwayRecord.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/HighwayRecord.h
-
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/HighwayRecord.h
 Highway.h
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Highway.h
-
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Intervention.cpp
-Intervention.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Intervention.h
 
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Intervention.h
 iostream
@@ -61,12 +49,6 @@ HighwayRecord.h
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/HighwayRecord.h
 Technician.h
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Technician.h
-
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/InterventionRecord.cpp
-InterventionRecord.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/InterventionRecord.h
-Utils.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Utils.h
 
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/InterventionRecord.h
 Intervention.h
@@ -84,10 +66,6 @@ string
 sqlite3.h
 -
 
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Movement.cpp
-Movement.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Movement.h
-
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Movement.h
 Vehicle.h
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Vehicle.h
@@ -97,10 +75,6 @@ Date.h
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/Date.h
 cmath
 -
-
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/MovementRecord.cpp
-MovementRecord.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/MovementRecord.h
 
 /home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/MovementRecord.h
 Movement.h
@@ -204,13 +178,5 @@ iostream
 stack
 -
 queue
--
-
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/main.cpp
-Classes/SystemNetwork.h
-/home/mim/Documents/FEUP/2ano/Cadeiras/1Semestre/AEDA/GIT/AEDA_Database/Classes/SystemNetwork.h
-windows.h
--
-wincon.h
 -
 

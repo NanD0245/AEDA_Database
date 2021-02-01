@@ -102,22 +102,22 @@ public:
     /**
      * @param type sets 'type' attribute
      */
-    void setType(bool type);
+    void setType(int toll_id, bool type);
 
     /**
      * @param name sets 'name' attribute
      */
-    void setName(string name);
+    void setName(int toll_id,string name);
 
     /**
      * @param geolocal sets 'geolocal' attribute
      */
-    void setGeolocal(string geolocal);
+    void setGeolocal(int toll_id,string geolocal);
 
     /**
      * @param kilometer sets 'kilometer' attribute
      */
-    void setKilometer(float kilometer);
+    void setKilometer(int toll_id,float kilometer);
 
     /**
      * Sets the 'green_lane' attribute of selected Lane object to true

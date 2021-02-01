@@ -1,7 +1,5 @@
 #include "Classes/SystemNetwork.h"
 
-#define file "../Cache/systemNetworks.txt"
-
 #ifdef _WIN32
 #ifndef UNICODE
 #define UNICODE

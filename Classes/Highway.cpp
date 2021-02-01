@@ -70,18 +70,22 @@ bool Highway::removeToll(Toll *t1) {
     return false;
 }
 
-bool Highway::removeToll(int i) {
-    if (i >= tolls.size())
+bool Highway::removeToll(int id) {
+    string query = "delete from tolls where id = " + to_string(id);
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc != SQLITE_OK) {
+        Utils::checkDbErr(rc);
         return false;
-    tolls.erase(tolls.begin()+i);
+    }
     return true;
 }
 
-bool Highway::checkTollName(string name) {
-    for (size_t i = 0; i < tolls.size(); i++) {
-        if (name == tolls[i]->getName())
+bool Highway::checkTollName(int highway_id, string name) {
+    string query = "Select * from Tolls where highway_id = " + to_string(highway_id);
+    sqlite3_prepare_v2(db,query.c_str(),-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE)
+        if (string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,2))) == name)
             return true;
-    }
     return false;
 }
 

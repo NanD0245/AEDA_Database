@@ -5,6 +5,7 @@ using namespace std;
 SystemNetwork::SystemNetwork() {
     highways = new HighwayRecord();
     highway = new Highway("");
+    toll = new Toll("","",0,false);
     movements = new MovementRecord();
     vehicles = new VehicleRecord();
     utils = new Utils();
@@ -58,17 +59,17 @@ void SystemNetwork::manageHighway(int highway_id) {
         switch(index) {
             case 1:
                 utils->clrScreen();
-                //createToll(highway);
+                createToll(highway_id);
                 utils->clrScreen();
                 break;
             case 2:
                 utils->clrScreen();
-                //updateToll(highway);
+                updateToll(highway_id);
                 utils->clrScreen();
                 break;
             case 3:
                 utils->clrScreen();
-                //deleteToll(highway);
+                deleteToll(highway_id);
                 utils->clrScreen();
                 break;
             case 4:
@@ -78,40 +79,40 @@ void SystemNetwork::manageHighway(int highway_id) {
                 break;
             case 5:
                 utils->clrScreen();
-                //auto *t1 = chooseToll(highway);
+                int toll_id = chooseToll(highway_id);
                 utils->clrScreen();
-                //if (t1 == nullptr)
-                //    break;
-                //manageToll(t1);
+                if (toll_id == -1)
+                    break;
+                manageToll(toll_id);
                 utils->clrScreen();
                 break;
         }
     } while(index);
 }
 
-void SystemNetwork::manageToll(Toll *toll) {
+void SystemNetwork::manageToll(int toll_id) {
     int index;
     do {
         index = utils->ShowMenu({"Create Lane", "Update Lane", "Delete Lane", "Read Lanes"});
         switch(index) {
             case 1:
                 utils->clrScreen();
-                createLane(toll);
+                createLane(toll_id);
                 utils->clrScreen();
                 break;
             case 2:
                 utils->clrScreen();
-                updateLane(toll);
+                updateLane(toll_id);
                 utils->clrScreen();
                 break;
             case 3:
                 utils->clrScreen();
-                deleteLane(toll);
+                deleteLane(toll_id);
                 utils->clrScreen();
                 break;
             case 4:
                 utils->clrScreen();
-                readLanes(toll);
+                readLanes(toll_id);
                 utils->clrScreen();
                 break;
         }
@@ -603,7 +604,7 @@ int SystemNetwork::chooseHighway() {
 
 
 
-void SystemNetwork::createToll(Highway *highway) {
+void SystemNetwork::createToll(int highway_id) {
     string s_name, s_geolocal;
     float kilometer;
     int i_type;
@@ -611,7 +612,8 @@ void SystemNetwork::createToll(Highway *highway) {
     while (!(s_name == "EXIT" || kilometer == -1 || i_type == 0)) {
         cout << "Input the toll's name: (if you want to exit without creating a toll please input EXIT)" << endl;
         getline(cin, s_name);
-        if (s_name != "EXIT" && !highway->checkTollName(s_name)) {
+        cout << !highway->checkTollName(highway_id, s_name) << endl;
+        if (s_name != "EXIT" && !highway->checkTollName(highway_id,s_name)) {
             cout << "Input the toll's geographic location: (if you want to exit without creating a toll please input EXIT)"<< endl;
             getline(cin, s_geolocal);
             if (s_geolocal != "EXIT") {
@@ -623,8 +625,12 @@ void SystemNetwork::createToll(Highway *highway) {
                     }
                     type = (i_type == 2);
                     if (i_type != 0) {
-                        highway->addToll(s_name, s_geolocal, kilometer, type);
-                        cout << "Toll created with success!" << endl;
+                        string query = "insert into tolls (highway_id,name,geolocal,highway_kilometer,type) values ("
+                                + to_string(highway_id) + ",'" + s_name + "','" + s_geolocal + "'," + to_string(kilometer) + "," + to_string(type) + ")";
+                        int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+                        if (rc != SQLITE_OK) {
+                            Utils::checkDbErr(rc);
+                        }
                         utils->waitForInput();
                         break;
                     }
@@ -649,23 +655,14 @@ void SystemNetwork::readTolls(int highway_id) {
         cout << "Toll Name: " << sqlite3_column_text(stmt,2) << " - Geographic Location: " << sqlite3_column_text(stmt,3)
                                 << " - Highway Kilometer: " << sqlite3_column_double(stmt,4) << " - Type: " << type << endl;
     }
-
-
-
-    /*string s_type;
-    cout << "Tolls: " << highway->getNumTolls() << endl;
-    for (size_t i = 0; i < highway->getNumTolls(); i++) {
-        cout << highway->getTollIndex(i)->showToll() << endl;
-    }*/
     utils->waitForInput();
 }
 
-void SystemNetwork::updateToll(Highway *highway) {
-    int index=0, toll_index;
+void SystemNetwork::updateToll(int highway_id) {
+    int index=0, toll_id = chooseToll(highway_id);
     float kilometer;
     string s_name;
-    toll_index = chooseIndexToll(highway);
-    if (toll_index!= -1) index = utils->ShowMenu({"Toll's name","Toll's geographic location", "Toll's highway kilometer", "Toll's type"});
+    if (toll_id!= -1) index = utils->ShowMenu({"Toll's name","Toll's geographic location", "Toll's highway kilometer", "Toll's type"});
     switch (index) {
         case 0:
             break;
@@ -673,8 +670,8 @@ void SystemNetwork::updateToll(Highway *highway) {
             while (s_name != "EXIT") {
                 cout << "Input the toll name: (if you want to exit without creating a toll please input EXIT)" << endl;
                 getline(cin, s_name);
-                if (s_name != "EXIT" && highway->checkTollName(s_name)) {
-                    highway->getTollIndex(toll_index)->setName(s_name);
+                if (s_name != "EXIT" && !highway->checkTollName(highway_id, s_name)) {
+                    toll->setName(toll_id,s_name);
                     cout << "Toll's name updated with success!" << endl;
                     utils->waitForInput();
                     break;
@@ -687,7 +684,7 @@ void SystemNetwork::updateToll(Highway *highway) {
             cout << "Input the toll's geographic location: (if you want to exit without updating a toll please input EXIT)" << endl;
             getline(cin, s_name);
             if (s_name != "EXIT") {
-                highway->getTollIndex(toll_index)->setGeolocal(s_name);
+                toll->setGeolocal(toll_id,s_name);
                 cout << "Toll's geographic location updated with success!" << endl;
                 utils->waitForInput();
                 break;
@@ -696,48 +693,57 @@ void SystemNetwork::updateToll(Highway *highway) {
         case 3:
             kilometer = utils->getFloat();
             if (kilometer != -1)
-                highway->getTollIndex(toll_index)->setKilometer(kilometer);
+                toll->setKilometer(toll_id,kilometer);
             break;
         case 4:
-            if (highway->getTollIndex(toll_index)->getNumLanes() == 0) {
-                cout << "Not possible to update toll's type because the toll doesn't have at least one lane" << endl;
+
+            /*if (highway->getTollIndex(toll_id)->getNumLanes() == 0) {
+                cout << "Not possible to update toll's type because the toll have at least one lane" << endl;
+                utils->waitForInput();
+            }*/
+            //else {
+            do {
+                index = utils->ShowMenu({"Entrance", "Exit"});
+            } while (!(index == 1 || index == 2 || index == 0));
+            if (index != 0) {
+                toll->setType(toll_id,index == 2);
+                cout << "Toll's type updated with success!" << endl;
                 utils->waitForInput();
             }
-            else {
-                do {
-                    index = utils->ShowMenu({"Entrance", "Exit"});
-                } while (!(index == 1 || index == 2 || index == 0));
-                if (index != 0) {
-                    highway->getTollIndex(toll_index)->setType(index == 2);
-                    cout << "Toll's type updated with success!" << endl;
-                    utils->waitForInput();
-                }
-            }
+            //}
     }
 }
 
-void SystemNetwork::deleteToll(Highway *highway) {
-    int toll_index;
-    toll_index = chooseIndexToll(highway);
-    if (highway->removeToll(toll_index)) {
+void SystemNetwork::deleteToll(int highway_id) {
+    int toll_id;
+    toll_id = chooseToll(highway_id);
+    if (highway->removeToll(toll_id)) {
         cout << "Toll removed with success!" << endl;
         utils->waitForInput();
     }
 }
 
-Toll * SystemNetwork::chooseToll(Highway* highway) {
-    int index;
-    index = chooseIndexToll(highway);
-    while((index < -1)) {
-        cout << "Invalid Number." << endl;
-        index = utils->getNumber(highway->getNumTolls()) -1;
+int SystemNetwork::chooseToll(int highway_id) {
+    vector<string> options;
+    vector<int> id;
+    string type,option,query = "select * from tolls where highway_id = " + to_string(highway_id);
+    sqlite3_prepare_v2(db,query.c_str(),-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        id.push_back(sqlite3_column_int(stmt,0));
+        if (sqlite3_column_int(stmt,5) == 0) type = "Entrance";
+        else type = "Exit";
+        option = "Toll Name: " + string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,2))) + " - Geographic Location: "
+                + string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,3)))
+                + " - Highway Kilometer: " + to_string(sqlite3_column_double(stmt,4)) + " - Type: " + type;
+        options.push_back(option);
     }
+    int index = utils->ShowMenu(options)-1;
     if (index == -1)
-        return nullptr;
-    return highway->getTollIndex(index);
+        return -1;
+    return id[index];
 }
 
-int SystemNetwork::chooseIndexToll(Highway* highway) const {
+/*int SystemNetwork::chooseIndexToll(Highway* highway) const {
     string s_type, s_menu;
     vector<string> v1;
     cout << "Tolls: " << highway->getNumTolls() << endl;
@@ -747,11 +753,11 @@ int SystemNetwork::chooseIndexToll(Highway* highway) const {
     }
     utils->clrScreen();
     return utils->ShowMenu(v1)-1;
-}
+}*/
 
 
 
-void SystemNetwork::createLane(Toll *toll) {
+void SystemNetwork::createLane(int toll_id) {
     int index;
     if (!toll->getType()) {
         toll->addLane();
@@ -783,19 +789,18 @@ void SystemNetwork::createLane(Toll *toll) {
     }
 }
 
-void SystemNetwork::readLanes(Toll *toll) {
-    string s_type;
-    cout << "Lanes: " << toll->getNumLanes() << endl;
-    for (size_t i = 0; i < toll->getNumLanes(); i++) {
-        cout << toll->getLane(i)->showLane() << endl;
+void SystemNetwork::readLanes(int toll_id) {
+    string query = "select * from lanes where toll_id = " + to_string(toll_id);
+    sqlite3_prepare_v2(db,query.c_str(),-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        //por acabar
     }
-    utils->waitForInput();
 }
 
-void SystemNetwork::updateLane(Toll *toll) {
+void SystemNetwork::updateLane(int toll_id) {
     int lane_index, index;
     if (toll->getType()) {
-        lane_index = chooseIndexLane(toll);
+        lane_index = chooseLane(toll_id);
         if (lane_index == -1) {}
         else if (toll->getLane(lane_index)->getGreenLane()) {
             index = utils->ShowMenu({"Green to normal lane"});
@@ -829,9 +834,9 @@ void SystemNetwork::updateLane(Toll *toll) {
     }
 }
 
-void SystemNetwork::deleteLane(Toll *toll) {
+void SystemNetwork::deleteLane(int toll_id) {
     int lane_index;
-    lane_index = chooseIndexLane(toll);
+    lane_index = chooseLane(toll_id);
     if (toll->removeLane(lane_index)) {
         cout << "Toll removed with success!" << endl;
         utils->waitForInput();
@@ -839,18 +844,33 @@ void SystemNetwork::deleteLane(Toll *toll) {
 }
 
 
-Lane * SystemNetwork::chooseLane(Toll *toll, int index) {
-    index = chooseIndexLane(toll,index);
-    while((index < -1)) {
-        cout << "Invalid Number." << endl;
-        index = utils->getNumber(toll->getNumLanes()) -1;
+int SystemNetwork::chooseLane(int toll_id) {
+    vector<string> options;
+    vector<int> id;
+    string option, query = "select * from lanes where employee_id is null and toll_id = " + to_string(toll_id);
+    sqlite3_prepare_v2(db,query.c_str(),-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        id.push_back(sqlite3_column_int(stmt,0));
+        string s_greenlane = sqlite3_column_int(stmt,3) ? "True" : "False";
+        option = "Lane Number: " + to_string(sqlite3_column_int(stmt,2)) + " - Greenlane: " + s_greenlane;
+        options.push_back(option);
     }
+    query = "select * from lanes,employees where Lanes.employee_id = Employees.id and Lanes.toll_id = " + to_string(toll_id);
+    sqlite3_prepare_v2(db,query.c_str(),-1,&stmt, nullptr);
+    while (sqlite3_step(stmt) != SQLITE_DONE) {
+        id.push_back(sqlite3_column_int(stmt,0));
+        string s_greenlane = sqlite3_column_int(stmt,3) ? "True" : "False";
+        option = "Lane Number: " + to_string(sqlite3_column_int(stmt,2)) + " - Greenlane: " + s_greenlane + " - Employee Name: "
+                + string(reinterpret_cast<const char*>(sqlite3_column_text(stmt,6))) + " - Code: " + to_string(sqlite3_column_int(stmt,5));
+        options.push_back(option);
+    }
+    int index = utils->ShowMenu(options) -1;
     if (index == -1)
-        return nullptr;
-    return toll->getLane(index);
+        return -1;
+    return id[index];
 }
 
-int SystemNetwork::chooseIndexLane(Toll* toll) const {
+/*int SystemNetwork::chooseIndexLane(int toll_id) const {
     string s_type, s_menu;
     vector<string> v1;
     cout << "Lanes: " << toll->getNumLanes() << endl;
@@ -872,7 +892,7 @@ int SystemNetwork::chooseIndexLane(Toll* toll,int index) const {
     }
     utils->clrScreen();
     return utils->ShowMenu(v1,index)-1;
-}
+}*/
 
 void SystemNetwork::createEmployee() {
     string s_name;

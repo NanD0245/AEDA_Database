@@ -35,6 +35,7 @@ class SystemNetwork {
 public:
     HighwayRecord* highways;
     Highway* highway;
+    Toll* toll;
     MovementRecord* movements;
     VehicleRecord* vehicles;
     Utils* utils;
@@ -80,7 +81,7 @@ public:
      * or update, read and delete  already existing Toll objects.
      * @param Toll object which the user will manage
      */
-    void manageToll(Toll * toll);
+    void manageToll(int toll_id);
 
     /**
      * Allows the user to either create a new Employee object
@@ -175,7 +176,7 @@ public:
      * attribute of selected Highway object
      * @param highway is the selected Highway object referred above
      */
-    void createToll(Highway * highway);
+    void createToll(int highway_id);
 
     /**
      * Prints information in the console about all Toll objects that belong to the provided Highway
@@ -187,13 +188,13 @@ public:
      * Allows the user to select a Toll that belongs to the Highway object, and then update its attributes
      * @param highway is the selected Highway object
      */
-    void updateToll(Highway * highway);
+    void updateToll(int highway_id);
 
     /**
      * Allows the user to select a Toll that belongs to the Highway object, and then delete it
      * @param highway is the selected Highway object
      */
-    void deleteToll(Highway * highway);
+    void deleteToll(int highway_id);
 
     /**
      *
@@ -208,7 +209,7 @@ public:
      * the program continues to ask the user for a valid index.
      * @return nullptr if index is -1, the selected Toll otherwise
      */
-    Toll* chooseToll(Highway* highway);
+    int chooseToll(int highway_id);
 
     /**
      * Allows the user to add a Lane object to selected Toll object 'toll'. If the Toll object is an entrance toll, the
@@ -216,26 +217,26 @@ public:
      * unless it isn't a green lane and there aren't any employees
      * @param toll is the selected Toll object referred above
      */
-    void createLane(Toll* toll);
+    void createLane(int toll_id);
 
     /**
      * Prints information in the console about all Lane objects that belong to the provided toll
      * @param toll is the selected Toll object referred above
      */
-    void readLanes(Toll* toll);
+    void readLanes(int toll_id);
 
     /**
      * Allows the user to select a Lane that belongs to the Toll object, and then update its attributes, unless the
      * toll is an entrance Toll, which means there are no attributes for the Lane to update
      * @param toll is the selected Toll object
      */
-    void updateLane(Toll* toll);
+    void updateLane(int toll_id);
 
     /**
      * Allows the user to select a Lane that belongs to the Toll object, and then delete it
      * @param toll is the selected Toll object
      */
-    void deleteLane(Toll* toll);
+    void deleteLane(int toll_id);
 
     /**
      *
@@ -243,7 +244,7 @@ public:
      * and their respective indexes
      * @param toll is the selected Toll object
      */
-    int chooseIndexLane(Toll* toll) const;
+    int chooseIndexLane(int toll_id) const;
 
     /**
      *
@@ -262,7 +263,7 @@ public:
      * @return nullptr if index is -1, the selected Lane otherwise
      */
 
-    Lane* chooseLane(Toll* toll, int index);
+    int chooseLane(int toll_id);
 
     /**
      * Allows the user to create an Employee object.

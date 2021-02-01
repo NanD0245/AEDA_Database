@@ -40,13 +40,37 @@ string Toll::showToll() const {
     return "Toll Name: " + name + " - Geographic Location: " + geolocal + " - Highway Kilometer: " + to_string(highway_kilometer) + " - Type: " + s_type;
 }
 
-void Toll::setType(bool type) {this->type = type;}
+void Toll::setType(int toll_id,bool type) {
+    string query = "update tolls set type = " + to_string(type) + " where id = " + to_string(toll_id);
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc != SQLITE_OK) {
+        Utils::checkDbErr(rc);
+    }
+}
 
-void Toll::setName(string name) {this->name = name;}
+void Toll::setName(int toll_id,string name) {
+    string query = "update tolls set name = '" + name + "' where id = " + to_string(toll_id);
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc != SQLITE_OK) {
+        Utils::checkDbErr(rc);
+    }
+}
 
-void Toll::setGeolocal(string geolocal) {this->geolocal = geolocal;}
+void Toll::setGeolocal(int toll_id,string geolocal) {
+    string query = "update tolls set geolocal = '" + geolocal + "' where id = " + to_string(toll_id);
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc != SQLITE_OK) {
+        Utils::checkDbErr(rc);
+    }
+}
 
-void Toll::setKilometer(float kilometer) {this->highway_kilometer = kilometer;}
+void Toll::setKilometer(int toll_id,float kilometer) {
+    string query = "update tolls set highway_kilometer = " + to_string(kilometer) + " where id = " + to_string(toll_id);
+    int rc = sqlite3_exec(db,query.c_str(),NULL,NULL,&err);
+    if (rc != SQLITE_OK) {
+        Utils::checkDbErr(rc);
+    }
+}
 
 void Toll::setGreenLaneTrue(Lane * lane) {
     int index = lane->getLaneNumber();

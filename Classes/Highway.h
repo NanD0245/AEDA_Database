@@ -100,7 +100,7 @@ public:
      * @param name is the string that a Toll object in 'tolls' vector may have
      * @return false if a Toll with name 'name' already exists, true otherwise
      */
-    bool checkTollName(string name);
+    bool checkTollName(int highway_id, string name);
 
     /**
      * @brief Overloads the '==' operator to be able to know if two different Highways are the same
